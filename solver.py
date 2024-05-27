@@ -36,7 +36,7 @@ class Solver(object):
         if config.mode == 'train':
             if self.config.load == '':
                 print("Loading pre-trained imagenet weights for fine tuning")
-                self.net.GeneralModule.load_pretrained_model(self.config.pretrained_model
+                self.net.FeatureExtractionModule.load_pretrained_model(self.config.pretrained_model
                                                         if isinstance(self.config.pretrained_model, str)
                                                         else self.config.pretrained_model[self.config.network])
                 # load pretrained backbone
