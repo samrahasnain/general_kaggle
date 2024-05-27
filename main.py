@@ -3,7 +3,33 @@ import os
 from dataset import get_loader
 from solver import Solver
 import time
+def get_test_info(config):
+    if config.sal_mode == 'NJU2K':
+        image_root = '/kaggle/input/testsod/NJU2K_test/NJU2K_test/'
+        image_source = '/kaggle/input/testsod/NJU2K_test/NJU2K_test/test.lst'
+    elif config.sal_mode == 'STERE':
+        image_root = '/kaggle/input/testsod//STERE/STERE/'
+        image_source = '/kaggle/input/testsod/STERE/STERE/test.lst'
+    elif config.sal_mode == 'RGBD135':
+        image_root = '/kaggle/input/testsod/RGBD135/RGBD135/'
+        image_source = '/kaggle/input/testsod/RGBD135/RGBD135/test.lst'
+    elif config.sal_mode == 'LFSD':
+        image_root = '/kaggle/input/testsod/LFSD/LFSD/'
+        image_source = '/kaggle/input/testsod/LFSD/LFSD/test.lst'
+    elif config.sal_mode == 'NLPR':
+        image_root = '/kaggle/input/testsod/NLPR/NLPR/'
+        image_source = '/kaggle/input/testsod/NLPR/NLPR/test.lst'
+    elif config.sal_mode == 'SIP':
+        image_root = '/kaggle/input/testsod/SIP/SIP/'
+        image_source = '/kaggle/input/testsod/SIP/SIP/test.lst'
+    elif config.sal_mode == 'ReDWeb-S':
+        image_root = 'dataset/test/ReDWeb-S/'
+        image_source = 'dataset/test/ReDWeb-S/test.lst'
+    else:
+        raise Exception('Invalid config.sal_mode')
 
+    config.test_root = image_root
+    config.test_list = image_source
 def main(config):
     if config.mode == 'train':
         train_loader = get_loader(config)
@@ -14,7 +40,7 @@ def main(config):
         train = Solver(train_loader, None,config)
         train.train()
     elif config.mode == 'test':
-        #get_test_info(config)
+        get_test_info(config)
         test_loader = get_loader(config, mode='test')
         if not os.path.exists(config.test_folder): os.makedirs(config.test_folder)
         test = Solver(None, test_loader, config)
@@ -67,8 +93,7 @@ if __name__ == '__main__':
     parser.add_argument('--test_folder', type=str, default='/kaggle/working/test/')  # Test results saving folder
     parser.add_argument('--sal_mode', type=str, default='LFSD',
                         choices=['NJU2K', 'NLPR', 'STERE', 'RGBD135', 'LFSD', 'SIP', 'ReDWeb-S'])  # Test image dataset
-    parser.add_argument('--test_root', type=str, default='/kaggle/input/testsod/LFSD/LFSD')
-    parser.add_argument('--test_list', type=str, default='/kaggle/input/testsod/LFSD/LFSD/test.lst')
+
     # Misc
     parser.add_argument('--mode', type=str, default='train', choices=['train', 'test'])
     config = parser.parse_args()
@@ -77,5 +102,5 @@ if __name__ == '__main__':
         os.mkdir(config.save_folder)
 
 
-
+    get_test_info(config)
     main(config)
