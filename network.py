@@ -53,4 +53,4 @@ def build_model(network='mobilenet', base_model_cfg='mobilenet'):
    
         backbone = mobilenet_v2()
         
-           return General(FeatureExtractionModule(backbone), Decoder())
+        return General(FeatureExtractionModule(backbone), Decoder())
