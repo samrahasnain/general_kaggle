@@ -1,17 +1,6 @@
 from torch import nn
 import torch
-try:
-    from torchvision.models.utils import load_state_dict_from_url # torchvision 0.4+
-except ModuleNotFoundError:
-    try:
-        from torch.hub import load_state_dict_from_url # torch 1.x
-    except ModuleNotFoundError:
-        from torch.utils.model_zoo import load_url as load_state_dict_from_url # torch 0.4.1
 
-
-model_urls = {
-    'mobilenet_v2': 'https://download.pytorch.org/models/mobilenet_v2-b0353104.pth',
-}
 class ConvBNReLU(nn.Sequential):
     def __init__(self, in_planes, out_planes, kernel_size=3, stride=1, groups=1, dilation=1):
         padding = (kernel_size - 1) // 2
@@ -112,11 +101,5 @@ class MobileNetV2(nn.Module):
 
 def mobilenet_v2(pretrained=True, progress=True, **kwargs):
     model = MobileNetV2(**kwargs)
-    if pretrained:
-        state_dict = load_state_dict_from_url(model_urls['mobilenet_v2'],
-                                              progress=progress)
-        print("loading imagenet pretrained mobilenetv2")
-        model.load_state_dict(state_dict, strict=False)
-        print("loaded imagenet pretrained mobilenetv2")
 
     return model
