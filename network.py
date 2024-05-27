@@ -16,10 +16,14 @@ class FeatureExtractionModule(nn.Module):
         self.backbone.load_state_dict(model_dict)
         
     def forward(self, x,y):
-        x,y = self.backbone(x,y)
-        '''print("Conformer Backbone")
-        for i in range(len(conv)):
-            print(i,"     ",conv[i].shape,tran[i].shape)'''
+        conv1r, conv2r, conv3r, conv4r, conv5r = self.backbone(x)
+        conv1d, conv2d, conv3d, conv4d, conv5d = self.backbone(y)        
+        print("Backbone Features shape")
+        print("RGB1: ",conv1r.shape,"    Depth1: "conv1d.shape)
+        print("RGB2: ",conv2r.shape,"    Depth2: "conv2d.shape)
+        print("RGB3: ",conv3r.shape,"    Depth3: "conv3d.shape)
+        print("RGB4: ",conv4r.shape,"    Depth4: "conv4d.shape)
+        print("RGB5: ",conv5r.shape,"    Depth5: "conv5d.shape)
         
 
         return conv,tran,q,k,v,x_att # list of tensor that compress model output
